@@ -22,8 +22,8 @@ Last updated: 2026-06-21
 | T07 | Portfolio capstone and deployment | [x] | T03, T04 | Accessible portfolio starter, 14-item validator, validation/Pages workflows, release path, and domain guide verified. |
 | T08 | Automated quality verification | [x] | T02–T07 | `npm test` passes structure, schema, content, asset, link, documentation, Markmap, and workflow checks. |
 | T09 | Final documentation and end-to-end review | [x] | T08 | README, numbered SDLC documentation, contribution/security files, test evidence, route/feedback review, and final static gate completed. Browser/live checks assigned to T11. |
-| T10 | Git repository publication and draft PR | [~] | T09 | Authentication, existing remote/history, full scope, validation, whitespace, and local HTTP runtime verified. Preparing commit and PR. |
-| T11 | GitHub Pages live verification | [ ] | T10 | Waiting for merge and Pages workflow. |
+| T10 | Git repository publication and draft PR | [x] | T09 | Commit `4838377` pushed on `codex/zero-to-published-course`; draft PR #1 opened; GitHub validation passed. |
+| T11 | GitHub Pages live verification | [~] | T10 | In progress: merge PR #1, enable Pages, monitor workflow, and verify public URL. |
 
 ## Dependency and parallel-execution analysis
 
@@ -148,3 +148,5 @@ The authoritative agent/context design is [`03_agent_execution_design.md`](03_ag
 | 2026-06-21 | T10 | GitHub CLI prerequisite check failed because the active keyring token is invalid. Publication stopped safely pending `gh auth login -h github.com`; T11 consequently waits. |
 | 2026-06-21 | T10 | Authentication reverified successfully. Fetched existing `cloudshare360/learn-git` history, preserved `git-flowchart.html`, and based local main on `origin/main`. |
 | 2026-06-21 | T10 | Configured secure GitHub CLI credential helper and repository-local no-reply authorship; full staged validation and local HTTP runtime checks passed. |
+| 2026-06-21 | T10 | Pushed `4838377`, opened https://github.com/cloudshare360/learn-git/pull/1, and observed the GitHub `validate` check pass. Completed T10 and started T11. |
+| 2026-06-21 | T11 | Before merge, added overview/roadmap/outcomes/differentiation, a 30-minute daily learning loop, varied progress motivation, and accessible highlighted text to speech; local revalidation in progress. |

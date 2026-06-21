@@ -19,6 +19,10 @@ Orientation → files/folders → terminal → Git/VS Code → local history
 - A first wrong answer receives a hint; repeated error links back to the exact explanation and schedules review.
 - Every diagram has a visible text alternative.
 - Destructive commands appear only in labeled disposable labs with inspection first.
+- The site opens on a course overview and roadmap instead of jumping directly to lesson content.
+- Lesson order is explicit: Understand → See → Practice → Validate.
+- Optional speech synthesis highlights the current reading block and, where supported, the current word without modifying lesson meaning.
+- Active minutes, a 30-minute daily goal, streaks, and varied module-specific messages encourage consistent practice without gating access.
 
 ## Visual types
 

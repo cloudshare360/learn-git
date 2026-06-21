@@ -3,7 +3,8 @@ import { evaluateAnswer } from './validators.js';
 
 const STORAGE_KEY = 'zero-to-published-state-v1';
 const defaults = {
-  os: 'windows', shell: 'powershell', theme: 'light', completed: [], review: [], attempts: {}, expanded: ['start'], capstone: []
+  os: 'windows', shell: 'powershell', theme: 'light', completed: [], review: [], attempts: {}, expanded: ['start'], capstone: [],
+  learning: { date: '', minutes: 0, streak: 0, lastVisit: '', dailyGoalCelebrated: false }
 };
 
 const $ = (selector, root = document) => root.querySelector(selector);
@@ -21,7 +22,27 @@ function loadState() {
 }
 
 let state = loadState();
+state.learning = { ...defaults.learning, ...(state.learning || {}) };
 let currentLessonId = routeLessonId();
+
+function localDate(offsetDays = 0) {
+  const date = new Date();
+  date.setDate(date.getDate() + offsetDays);
+  return date.toLocaleDateString('en-CA');
+}
+
+function beginLearningDay() {
+  const today = localDate();
+  if (state.learning.date !== today) {
+    const continued = state.learning.lastVisit === localDate(-1);
+    state.learning.streak = continued ? state.learning.streak + 1 : 1;
+    state.learning.date = today;
+    state.learning.minutes = 0;
+    state.learning.dailyGoalCelebrated = false;
+  }
+  state.learning.lastVisit = today;
+  saveState();
+}
 
 function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -29,7 +50,7 @@ function saveState() {
 
 function routeLessonId() {
   const id = decodeURIComponent(location.hash.replace(/^#\/?/, '').split('/')[0]);
-  return lessonById.has(id) ? id : 'welcome';
+  return id === 'home' || lessonById.has(id) ? id : 'home';
 }
 
 function routeSectionId() {
@@ -145,7 +166,8 @@ function renderQuiz(lesson) {
   const quiz = lesson.quiz;
   const attempts = state.attempts[lesson.id] || 0;
   return `<section id="knowledge-check" class="lesson-section quiz-card" data-quiz="${lesson.id}">
-    <p class="eyebrow">Knowledge check</p><h2>${escapeHtml(quiz.prompt)}</h2>
+    <p class="eyebrow">Validate your understanding</p><h2>${escapeHtml(quiz.prompt)}</h2>
+    <p>This check uses the concept, example, and practice explained above. If the answer is unclear, return to the explanation before guessing.</p>
     <form>
       <fieldset><legend class="sr-only">Choose one answer</legend>
         ${quiz.options.map((option, index) => `<label class="answer-option"><input type="radio" name="answer" value="${index}"><span>${escapeHtml(option)}</span></label>`).join('')}
@@ -164,6 +186,11 @@ function renderCapstone(lesson) {
 }
 
 function renderLesson() {
+  stopSpeech();
+  if (currentLessonId === 'home') {
+    renderLanding();
+    return;
+  }
   const lesson = lessonById.get(currentLessonId) || allLessons[0];
   const index = allLessons.findIndex((item) => item.id === lesson.id);
   const terms = lesson.terms.map((key) => ({ key, name: key.replaceAll('_', ' '), definition: glossary[key] || 'Defined in this lesson.' }));
@@ -171,6 +198,7 @@ function renderLesson() {
 
   $('#lesson-content').innerHTML = `<article class="lesson-article">
     <header class="lesson-header"><p class="breadcrumb">Module ${escapeHtml(lesson.moduleNumber)} · ${escapeHtml(lesson.moduleTitle)}</p><h1>${escapeHtml(lesson.title)}</h1><p class="lesson-outcome">${escapeHtml(lesson.outcome)}</p><div class="lesson-meta"><span>About ${lesson.duration} minutes</span><span>${completed ? '✓ Completed' : 'Not completed'}</span></div></header>
+    <ol class="learning-cycle" aria-label="Lesson learning sequence"><li><strong>1. Understand</strong><span>Learn the concept and why it matters</span></li><li><strong>2. See</strong><span>Use the visual and worked steps</span></li><li><strong>3. Practice</strong><span>Apply it and inspect the result</span></li><li><strong>4. Validate</strong><span>Check understanding and review gaps</span></li></ol>
     ${lesson.prerequisites.length ? `<aside class="prerequisites"><strong>Before you begin</strong><ul>${lesson.prerequisites.map((id) => `<li><a href="#/${id}">${escapeHtml(lessonById.get(id)?.title || id)}</a></li>`).join('')}</ul></aside>` : ''}
     <section id="understand" class="lesson-section"><h2>Understand the idea</h2>${lesson.explanation.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}</section>
     ${renderVisual(lesson.visual)}
@@ -189,7 +217,46 @@ function renderLesson() {
   $('#on-page-nav').innerHTML = $$('.lesson-section, .learning-visual', $('#lesson-content')).map((section) => `<a href="#/${lesson.id}/${section.id}" data-scroll-to="${section.id}">${escapeHtml($('h2, figcaption strong', section)?.textContent || section.id)}</a>`).join('');
   $('#complete-button').textContent = completed ? 'Lesson completed ✓' : 'Mark lesson complete';
   $('#complete-button').disabled = completed;
+  delete $('#complete-button').dataset.action;
   document.title = `${lesson.title} — Zero to Published`;
+  renderTree($('#course-search').value);
+  closePanels();
+}
+
+function renderLanding() {
+  $('#lesson-content').innerHTML = `<article class="landing-page">
+    <header class="landing-hero">
+      <p class="eyebrow">No computer knowledge assumed</p>
+      <h1>Go from your first folder to a published portfolio.</h1>
+      <p class="landing-lead">Zero to Published is a practical Git, GitHub, and web-development course for complete beginners. You learn each idea visually, practice it safely, check your understanding, and finish by sharing real work with the world.</p>
+      <div class="landing-actions"><a class="primary-link" href="#/welcome">Start from the beginning</a><a class="secondary-link" href="#/home/roadmap">See the roadmap</a></div>
+      <ul class="landing-facts" aria-label="Course facts"><li><strong>${course.length}</strong><span>modules</span></li><li><strong>${allLessons.length}</strong><span>lessons</span></li><li><strong>3</strong><span>operating systems</span></li><li><strong>1</strong><span>published portfolio</span></li></ul>
+    </header>
+    <section class="landing-section" id="course-overview"><p class="eyebrow">Course overview</p><h2>Learn the whole workflow, not disconnected commands</h2><p>You begin with clicking, folders, filenames, paths, and terminals on Windows, macOS, or Linux. You then install Git and VS Code, record changes, work with branches, collaborate through pull requests, recover from mistakes, and use releases and automation.</p><p>The final part teaches Markdown, HTML, CSS, and JavaScript so you can build an accessible portfolio, deploy it with GitHub Actions and GitHub Pages, connect a custom domain, and maintain it like a real production project.</p></section>
+    <section class="landing-section daily-plan" id="daily-plan"><p class="eyebrow">Your 30-minute daily practice</p><h2>Small, consistent sessions create durable skills</h2><div class="daily-plan-grid"><article><strong>5 min</strong><h3>Review</h3><p>Open one review item or explain yesterday’s key idea without looking.</p></article><article><strong>15 min</strong><h3>Learn</h3><p>Complete one focused lesson. Pause and repeat commands in the safe practice project.</p></article><article><strong>10 min</strong><h3>Apply</h3><p>Perform the independent task, record one commit or note, and stop at a clean checkpoint.</p></article></div><p class="daily-message">Today: <strong>${state.learning.minutes} of 30 minutes</strong> · <strong>${state.learning.streak}-day learning streak</strong>. Consistency matters more than finishing many lessons at once.</p></section>
+    <section class="landing-section" id="roadmap"><p class="eyebrow">Learning roadmap</p><h2>A visible path from zero to production</h2><ol class="roadmap-list">${course.map((module) => `<li><span>${module.number}</span><div><h3>${escapeHtml(module.title)}</h3><p>${escapeHtml(module.description)}</p><a href="#/${module.lessons[0].id}">Open this module</a></div></li>`).join('')}</ol></section>
+    <section class="landing-section outcomes-section" id="outcomes-section"><p class="eyebrow">What you will achieve</p><h2>At the end, you can complete a real delivery cycle</h2><div class="outcome-grid">
+      <article><span aria-hidden="true">01</span><h3>Use a computer confidently</h3><p>Navigate files and folders through graphical tools and terminals, understand paths, and work safely across operating systems.</p></article>
+      <article><span aria-hidden="true">02</span><h3>Use Git independently</h3><p>Create and clone repositories, inspect changes, commit focused work, branch, merge, synchronize, tag, recover, and troubleshoot.</p></article>
+      <article><span aria-hidden="true">03</span><h3>Collaborate on GitHub</h3><p>Use issues, forks, remotes, feature branches, pull requests, reviews, conflicts, checks, releases, and team workflows.</p></article>
+      <article><span aria-hidden="true">04</span><h3>Publish proof of your work</h3><p>Build a responsive accessible portfolio, document it in Markdown, deploy through Pages, and map an HTTPS custom domain.</p></article>
+    </div></section>
+    <section class="landing-section difference-section" id="difference-section"><p class="eyebrow">How this course is different</p><h2>Designed for learning, recovery, and real outcomes</h2><div class="difference-grid">
+      <article><h3>No hidden prerequisites</h3><p>Computer basics are taught explicitly. Terms, buttons, paths, shells, commands, and output are introduced before use.</p></article>
+      <article><h3>GUI and terminal together</h3><p>Use Explorer, Finder, VS Code, GitHub, and terminal commands instead of being locked into only one interface.</p></article>
+      <article><h3>Mistakes are part of the curriculum</h3><p>Every lesson explains common failures, their causes, and the safest recovery path. Risky operations stay in disposable practice.</p></article>
+      <article><h3>Accessible visual learning</h3><p>Diagrams, Markmap source, text alternatives, quizzes, remediation, progress tracking, and read-aloud highlighting support different learning needs.</p></article>
+      <article><h3>Production, not a toy exercise</h3><p>The capstone includes SDLC documents, feature branches, review, GitHub Actions, Pages deployment, version tags, domains, and maintenance.</p></article>
+      <article><h3>Commands stay explainable</h3><p>Every command is labeled by shell and paired with its purpose, expected state, and safety context.</p></article>
+    </div></section>
+    <section class="landing-cta"><h2>Ready to create something you can share?</h2><p>Choose your operating system above. Your progress remains in this browser and you can export it at any time.</p><a class="primary-link" href="#/welcome">Begin lesson 1</a></section>
+  </article>`;
+  $('#terms-list').innerHTML = '<div><dt>Version control</dt><dd>A system that records changes so work can be compared, shared, and recovered.</dd></div><div><dt>Portfolio</dt><dd>A public collection of work and evidence that demonstrates your skills.</dd></div>';
+  $('#on-page-nav').innerHTML = [['course-overview','Overview'],['daily-plan','30-minute plan'],['roadmap','Roadmap'],['outcomes-section','Outcomes'],['difference-section','What makes it different']].map(([id,label]) => `<a href="#/home/${id}" data-scroll-to="${id}">${label}</a>`).join('');
+  $('#complete-button').textContent = 'Start the course';
+  $('#complete-button').disabled = false;
+  $('#complete-button').dataset.action = 'start';
+  document.title = 'Zero to Published — Git, GitHub & the Web';
   renderTree($('#course-search').value);
   closePanels();
 }
@@ -200,6 +267,26 @@ function updateProgress() {
   $('#course-progress').textContent = `${percent}%`;
   $('#progress-text').textContent = `${percent}%`;
   $('#review-count').textContent = state.review.length;
+  $('#daily-minutes').textContent = state.learning.minutes;
+  $('#streak-count').textContent = state.learning.streak;
+}
+
+function motivationFor(lesson) {
+  const messages = {
+    start: ['You built the foundation: safe habits make every later command easier.', 'First checkpoint complete. You now know how to learn safely.'],
+    'computer-basics': ['Your computer is becoming a tool you control—paths and folders are real developer skills.', 'Navigation unlocked. Every terminal workflow starts with knowing where you are.'],
+    tools: ['Your workspace is ready. Setup work pays off every day you build.', 'Tooling complete—now your edits can become reliable history.'],
+    'git-foundations': ['You are creating explainable history, not piles of “final” files.', 'A clean commit is evidence of deliberate work.'],
+    remotes: ['Local work is now shareable. You connected your computer to a collaborative workflow.', 'Remote skills unlocked—fetch, inspect, integrate, then push.'],
+    branches: ['You can develop without destabilizing shared work. That is a professional habit.', 'Feature branch progress: isolated, reviewable, recoverable.'],
+    collaboration: ['You are practicing how real teams improve work together.', 'Review and conflict skills turn parallel work into one reliable result.'],
+    toolkit: ['You are learning to investigate before changing—a high-value engineering habit.', 'Release knowledge unlocked. Your history can now communicate production milestones.'],
+    'markdown-web': ['Your work is becoming readable to browsers, teammates, and future you.', 'Web foundation complete: structure, presentation, behavior, and quality.'],
+    capstone: ['You moved one step closer to public proof of your skills.', 'Production progress: plan, build, test, deploy, verify.'],
+    reference: ['Advanced tools are useful because you now understand when not to use them.', 'Troubleshooting skill grows from evidence, not random commands.']
+  };
+  const options = messages[lesson.moduleId] || ['Checkpoint complete. Your consistent practice is building usable skill.'];
+  return options[state.completed.length % options.length];
 }
 
 function markComplete(id = currentLessonId, rerender = true) {
@@ -207,7 +294,11 @@ function markComplete(id = currentLessonId, rerender = true) {
   state.review = state.review.filter((item) => item !== id);
   saveState();
   if (rerender) renderLesson();
-  showToast('Lesson marked complete.');
+  const lesson = lessonById.get(id);
+  showToast(`✓ ${motivationFor(lesson)}`);
+  document.body.classList.remove('celebrate');
+  requestAnimationFrame(() => document.body.classList.add('celebrate'));
+  setTimeout(() => document.body.classList.remove('celebrate'), 900);
 }
 
 function handleQuiz(form) {
@@ -250,12 +341,119 @@ function exportProgress() {
 
 function resetProgress() {
   if (!confirm('Reset all lesson progress, quiz attempts, and preferences on this browser? This cannot be undone unless you exported progress.')) return;
-  state = { ...defaults, completed: [], review: [], attempts: {}, expanded: ['start'], capstone: [] };
+  state = { ...defaults, completed: [], review: [], attempts: {}, expanded: ['start'], capstone: [], learning: { ...defaults.learning } };
+  beginLearningDay();
   saveState();
   document.documentElement.dataset.theme = state.theme;
   renderShellOptions();
   renderLesson();
   showToast('Progress reset.');
+}
+
+let speechBlocks = [];
+let speechBlockIndex = 0;
+let speechPaused = false;
+
+function clearSpeechHighlight() {
+  $$('.speech-reading', $('#lesson-content')).forEach((element) => element.classList.remove('speech-reading'));
+  if (globalThis.CSS?.highlights) CSS.highlights.delete('tts-word');
+}
+
+function textRange(element, start, length) {
+  const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+  let offset = 0;
+  let startNode;
+  let startOffset = 0;
+  let endNode;
+  let endOffset = 0;
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    const next = offset + node.textContent.length;
+    if (!startNode && start >= offset && start <= next) {
+      startNode = node;
+      startOffset = Math.min(start - offset, node.textContent.length);
+    }
+    if (startNode && start + length <= next) {
+      endNode = node;
+      endOffset = Math.min(start + length - offset, node.textContent.length);
+      break;
+    }
+    offset = next;
+  }
+  if (!startNode || !endNode) return null;
+  const range = new Range();
+  range.setStart(startNode, startOffset);
+  range.setEnd(endNode, Math.max(endOffset, startOffset + (startNode === endNode ? 1 : 0)));
+  return range;
+}
+
+function updateSpeechButtons(reading) {
+  $('#speech-play').disabled = reading && !speechPaused;
+  $('#speech-pause').disabled = !reading;
+  $('#speech-stop').disabled = !reading;
+  $('#speech-pause').textContent = speechPaused ? 'Resume' : 'Pause';
+}
+
+function speakNextBlock() {
+  clearSpeechHighlight();
+  if (speechBlockIndex >= speechBlocks.length) {
+    $('#speech-status').textContent = 'Finished';
+    updateSpeechButtons(false);
+    return;
+  }
+  const element = speechBlocks[speechBlockIndex];
+  const text = element.textContent.trim().replace(/\s+/g, ' ');
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.rate = Number($('#speech-rate').value);
+  utterance.onstart = () => {
+    element.classList.add('speech-reading');
+    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    $('#speech-status').textContent = `Reading section ${speechBlockIndex + 1} of ${speechBlocks.length}`;
+    updateSpeechButtons(true);
+  };
+  utterance.onboundary = (event) => {
+    if (event.name !== 'word' || !globalThis.CSS?.highlights || !globalThis.Highlight) return;
+    const remaining = text.slice(event.charIndex);
+    const length = event.charLength || remaining.match(/^\S+/)?.[0].length || 1;
+    const range = textRange(element, event.charIndex, length);
+    if (range) CSS.highlights.set('tts-word', new Highlight(range));
+  };
+  utterance.onend = () => { speechBlockIndex += 1; speakNextBlock(); };
+  utterance.onerror = (event) => {
+    if (event.error === 'canceled' || event.error === 'interrupted') return;
+    $('#speech-status').textContent = 'Reading stopped because the browser voice was unavailable.';
+    updateSpeechButtons(false);
+  };
+  speechSynthesis.speak(utterance);
+}
+
+function startSpeech() {
+  if (!('speechSynthesis' in window)) return;
+  stopSpeech();
+  speechBlocks = $$('h1, h2, h3, p, .steps-list li, .roadmap-list li', $('#lesson-content')).filter((element) =>
+    element.textContent.trim() && !element.closest('nav, form, pre, .quiz-card, .checklist') && !element.parentElement?.closest('h1, h2, h3, p, li')
+  );
+  speechBlockIndex = 0;
+  speechPaused = false;
+  $('#speech-status').textContent = 'Starting…';
+  speakNextBlock();
+}
+
+function toggleSpeechPause() {
+  if (!speechSynthesis.speaking) return;
+  if (speechPaused) speechSynthesis.resume(); else speechSynthesis.pause();
+  speechPaused = !speechPaused;
+  $('#speech-status').textContent = speechPaused ? 'Paused' : `Reading section ${speechBlockIndex + 1} of ${speechBlocks.length}`;
+  updateSpeechButtons(true);
+}
+
+function stopSpeech() {
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  speechBlocks = [];
+  speechBlockIndex = 0;
+  speechPaused = false;
+  clearSpeechHighlight();
+  if ($('#speech-status')) $('#speech-status').textContent = 'Ready';
+  if ($('#speech-play')) updateSpeechButtons(false);
 }
 
 function closePanels() {
@@ -329,11 +527,16 @@ $('#lesson-content').addEventListener('change', (event) => {
 $('#course-search').addEventListener('input', (event) => renderTree(event.target.value));
 $('#os-select').addEventListener('change', (event) => setOS(event.target.value));
 $('#shell-select').addEventListener('change', (event) => { state.shell = event.target.value; saveState(); renderLesson(); });
-$('#complete-button').addEventListener('click', () => markComplete());
+$('#complete-button').addEventListener('click', (event) => { if (event.currentTarget.dataset.action === 'start') location.hash = '#/welcome'; else markComplete(); });
 $('#export-button').addEventListener('click', exportProgress);
 $('#reset-button').addEventListener('click', resetProgress);
 $('#review-button').addEventListener('click', () => { $('#course-search').value = ''; renderTree(); const target = state.review[0]; if (target) location.hash = `#/${target}`; else showToast('No lessons need review.'); });
 $('#theme-button').addEventListener('click', () => { state.theme = state.theme === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = state.theme; saveState(); $('#theme-button').setAttribute('aria-label', `Switch to ${state.theme === 'dark' ? 'light' : 'dark'} theme`); });
+$('#listen-button').addEventListener('click', () => { const controls = $('#speech-controls'); controls.hidden = !controls.hidden; $('#listen-button').setAttribute('aria-expanded', String(!controls.hidden)); if (!controls.hidden) $('#speech-play').focus(); });
+$('#speech-play').addEventListener('click', startSpeech);
+$('#speech-pause').addEventListener('click', toggleSpeechPause);
+$('#speech-stop').addEventListener('click', stopSpeech);
+$('#speech-rate').addEventListener('change', () => { if (speechSynthesis.speaking) startSpeech(); });
 $('#course-menu-button').addEventListener('click', () => openPanel('#course-menu-button', '#course-panel'));
 $('#tools-menu-button').addEventListener('click', () => openPanel('#tools-menu-button', '#tools-panel'));
 $$('[data-close]').forEach((button) => button.addEventListener('click', closePanels));
@@ -348,6 +551,19 @@ window.addEventListener('hashchange', () => {
 });
 
 document.documentElement.dataset.theme = state.theme;
+beginLearningDay();
 renderShellOptions();
-if (!location.hash) history.replaceState(null, '', '#/welcome');
+if (!('speechSynthesis' in window)) { $('#listen-button').disabled = true; $('#listen-button').title = 'Text to speech is unavailable in this browser'; }
+if (!location.hash) history.replaceState(null, '', '#/home');
 renderLesson();
+
+setInterval(() => {
+  if (document.hidden) return;
+  state.learning.minutes += 1;
+  if (state.learning.minutes >= 30 && !state.learning.dailyGoalCelebrated) {
+    state.learning.dailyGoalCelebrated = true;
+    showToast('★ Daily goal complete. Thirty focused minutes today is meaningful progress.');
+  }
+  saveState();
+  updateProgress();
+}, 60_000);

@@ -75,6 +75,12 @@ function validateHtmlAndAssets() {
   }
   const shell = read('index.html');
   ['<header', '<main', '<aside', 'Skip to lesson', 'aria-label="Course contents"'].forEach((needle) => ok(shell.includes(needle), `index.html missing semantic landmark: ${needle}`));
+  ['listen-button', 'speech-controls', 'speech-play', 'daily-minutes', 'streak-count'].forEach((needle) => ok(shell.includes(needle), `index.html missing learning support control: ${needle}`));
+  const app = read('js/app.js');
+  ['renderLanding', 'Course overview', 'Learning roadmap', 'What you will achieve', 'How this course is different', 'Your 30-minute daily practice', 'SpeechSynthesisUtterance', 'speech-reading', 'motivationFor'].forEach((needle) => ok(app.includes(needle), `Application missing landing/read-aloud/daily-learning feature: ${needle}`));
+  const lessonRenderer = app.slice(app.indexOf('function renderLesson'), app.indexOf('function renderLanding'));
+  const renderOrder = ['id="understand"', 'renderVisual(lesson.visual)', 'id="steps"', 'renderCommands(lesson)', 'id="result"', 'id="practice"', 'id="mistakes"', 'renderQuiz(lesson)'].map((needle) => lessonRenderer.indexOf(needle));
+  ok(renderOrder.every((position) => position >= 0) && renderOrder.every((position, index) => index === 0 || position > renderOrder[index - 1]), 'Lesson rendering must explain, show, practice, recover, then validate in that order');
 }
 
 function validateDocumentation() {

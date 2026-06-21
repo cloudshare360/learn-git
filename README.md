@@ -4,6 +4,8 @@ An interactive, beginner-first course for people with no assumed computer knowle
 
 The capstone is a public portfolio website built through issues, feature branches, commits, pull requests, automated checks, deployment, tags, and maintenance releases.
 
+The site begins with a course overview and roadmap, supports a 30-minute daily learning habit with local streak/progress tracking, and provides optional text-to-speech reading with synchronized focus highlighting.
+
 ## Project status
 
 The course is under active implementation. Progress and verification evidence are maintained in the [task tracker](docs/02_planning/02_task_tracker.md).

@@ -53,6 +53,23 @@ Course data: HTTP 200, bytes 145121
 
 The home response contained the expected “Zero to Published” application shell, and the loaded course module contained the custom-domain curriculum.
 
+### GitHub pull-request result
+
+- Branch: `codex/zero-to-published-course`
+- Initial feature commit: `4838377`
+- Pull request: https://github.com/cloudshare360/learn-git/pull/1
+- GitHub Actions validation: passed
+
+### Pre-merge learner-experience expansion
+
+Before merge, the release added and revalidated:
+
+- A root overview explaining purpose, audience, roadmap, outcomes, and differentiation.
+- A 30-minute daily routine, active-minute goal, streak, milestone celebration, and varied module-specific benefit messages.
+- Browser-native start, pause/resume, stop, and speed controls for text to speech.
+- Current-block highlighting and current-word highlighting through the CSS Custom Highlight API when supported.
+- An explicit Understand → See → Practice → Validate lesson sequence, enforced by the validator.
+
 ### Review findings corrected
 
 - Corrected in-page navigation so hash-based lesson routing does not misinterpret section links.

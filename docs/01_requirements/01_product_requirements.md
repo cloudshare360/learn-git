@@ -956,6 +956,22 @@ After initial load, core text, diagrams, and progress should remain usable under
 
 Lesson content, diagrams, questions, and image metadata must be stored in version-controlled, reviewable formats. Contributors must be able to preview changes locally and validate links, code blocks, and front matter.
 
+### FR-13: Course introduction before lessons
+
+The root page must explain the course purpose, target learner, scope, roadmap, end outcomes, practical capstone, and differences from command-reference websites before directing the learner into lesson content.
+
+### FR-14: Read-aloud focus support
+
+The application must provide optional browser-native text-to-speech controls for overview and lesson content. It must expose start, pause/resume, stop, and speed controls; visually emphasize the current block and current word when browser support permits; announce status accessibly; and stop reading when navigation changes. Core learning must remain available without speech support.
+
+### FR-15: Daily practice and motivation
+
+The course must recommend a repeatable 30-minute daily routine divided among review, new learning, and application. It must track today’s active minutes and daily streak locally, celebrate the daily target once, and use varied module-specific completion messages that explain the benefit gained. Motivation must not block content, shame the learner, or ignore reduced-motion preferences.
+
+### FR-16: Explain before assessment
+
+Every lesson must enforce the presentation order: concept and terms, visual/worked example, guided steps and commands, expected result, independent practice, mistakes/recovery, then validation. Incorrect responses must provide a hint and route repeated misunderstanding to the exact explanation before retrying.
+
 ---
 
 ## 11. Non-functional requirements
