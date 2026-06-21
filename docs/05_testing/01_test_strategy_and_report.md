@@ -1,0 +1,75 @@
+# Test Strategy and Report
+
+## Automated scope
+
+- Required files and semantic application landmarks.
+- JavaScript syntax and importability.
+- Unique module/lesson IDs and valid prerequisites.
+- Complete lesson schema, command variants, quiz answers, and remediation data.
+- Required curriculum concepts and capstone checks.
+- Internal documentation links and referenced assets.
+- GitHub Pages workflow structure and relative application URLs.
+
+## Manual scope
+
+- Keyboard-only navigation and visible focus.
+- Screen-reader landmarks, labels, status messages, and diagram alternatives.
+- Windows, macOS, and Linux command selection.
+- Deep-link reload, Back/Forward navigation, search, and mobile panels.
+- Quiz hint/remediation/completion and progress export/reset.
+- Narrow, tablet, desktop, 200% zoom, reduced motion, and print.
+- Pages deployment, public links, asset case, HTTPS, and custom domain.
+
+## Current report
+
+Date: 2026-06-21
+
+### Automated result
+
+Command:
+
+```text
+npm test
+```
+
+Result:
+
+```text
+Validation passed: 11 modules, 44 lessons, 13 documentation files, 14 capstone checks.
+```
+
+The validator checked required files, JavaScript parsing, lesson and quiz schemas, IDs and prerequisites, remediation states, critical curriculum coverage, one accessible visual per lesson, capstone completion, local HTML assets, project-Pages-safe paths, numbered SDLC documents, internal documentation links, Markmap source structure, and workflow permissions/stages.
+
+Focused checks also confirmed 13 visual types, 29 simulator-eligible command lessons, and the expected portfolio/Pages files.
+
+### Local runtime result
+
+The application was started with `npm start` and tested over HTTP:
+
+```text
+Local home: HTTP 200, bytes 5414
+Course data: HTTP 200, bytes 145121
+```
+
+The home response contained the expected “Zero to Published” application shell, and the loaded course module contained the custom-domain curriculum.
+
+### Review findings corrected
+
+- Corrected in-page navigation so hash-based lesson routing does not misinterpret section links.
+- Preserved correct-answer feedback while marking a lesson complete.
+- Added explicit SDLC, custom-domain, concrete Actions, cherry-pick/conflict, partial-staging, file tracking, attributes, and Git LFS coverage after curriculum audit.
+- Ensured the portfolio starter has relative asset paths suitable for a project Pages URL.
+
+### Environment limitation
+
+Approved headless Edge/Chrome attempts hung under the managed execution environment and were terminated. They produced no application failure output, but are not counted as browser interaction evidence. Interactive browser, screen-reader, and live Pages verification remain release gates and must be recorded after GitHub publication.
+
+### Manual release checklist
+
+- [ ] Keyboard-only tree, lesson, quiz, copy, panel, and checklist use.
+- [ ] Deep links and browser Back/Forward.
+- [ ] Windows, macOS, and Linux command switching.
+- [ ] Hint, repeated-error remediation, completion, review queue, export, and reset.
+- [ ] Narrow/mobile layout, 200% zoom, dark theme, reduced motion, and print.
+- [ ] Screen-reader landmarks, labels, status messages, and visual alternatives.
+- [ ] Live Pages workflow, public URL, assets, console, HTTPS, and expected commit.
