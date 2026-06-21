@@ -1,0 +1,100 @@
+lowchart LR
+    A["Git Tree Roadmap / Requirements"]
+
+    A --> B["Install Git<br/>Windows: winget install --id Git.Git -e<br/>macOS: brew install git<br/>Ubuntu: sudo apt update && sudo apt install git<br/>Check: git --version"]
+
+    A --> C["Install VS Code<br/>Windows: winget install Microsoft.VisualStudioCode<br/>macOS: brew install --cask visual-studio-code<br/>Ubuntu: sudo snap install code --classic<br/>Check: code --version"]
+
+    A --> D["Install AI Tools"]
+
+    D --> D1["Codex CLI<br/>npm install -g @openai/codex<br/>brew install --cask codex<br/>Run: codex"]
+
+    D --> D2["Claude Code<br/>curl -fsSL https://claude.ai/install.sh | bash<br/>irm https://claude.ai/install.ps1 | iex<br/>npm install -g @anthropic-ai/claude-code<br/>Run: claude"]
+
+    A --> E["Setup Git Identity<br/>git config --global user.name &quot;Your Name&quot;<br/>git config --global user.email &quot;your@email.com&quot;<br/>Check: git config --global --list"]
+
+    A --> F["Step 1: Create Project Folder"]
+
+    F --> F1["Create Folder<br/>mkdir my-git-project<br/>cd my-git-project"]
+
+    F --> F2["Open in VS Code<br/>code ."]
+
+    F --> F3["Open in Codex<br/>cd my-git-project<br/>codex"]
+
+    F --> F4["Open in Claude Code<br/>cd my-git-project<br/>claude"]
+
+    A --> G["Step 2: Local Version Control / Git"]
+
+    G --> G1["Initialize Repository<br/>git init<br/>Check: ls -a"]
+
+    G --> G2["Check Status<br/>git status"]
+
+    G --> G3["Stage Files<br/>git add .<br/>or: git add index.html"]
+
+    G --> G4["Create First Commit<br/>git commit -m &quot;Initial commit&quot;"]
+
+    G --> G5["View History<br/>git log<br/>git log --oneline"]
+
+    G --> G6["Checkpoint Workflow<br/>git status<br/>git add .<br/>git commit -m &quot;Save progress&quot;"]
+
+    A --> H["Step 3: Cloud Hosting / GitHub"]
+
+    H --> H1["Install GitHub CLI<br/>Windows: winget install GitHub.cli<br/>macOS: brew install gh<br/>Ubuntu: sudo apt install gh<br/>Check: gh --version"]
+
+    H --> H2["Login to GitHub<br/>gh auth login<br/>Check: gh auth status"]
+
+    H --> H3["Create Public Repo<br/>gh repo create my-git-project --public --source=. --remote=origin --push"]
+
+    H --> H4["Create Private Repo<br/>gh repo create my-git-project --private --source=. --remote=origin --push"]
+
+    H --> H5["Manual Remote Setup<br/>git remote add origin https://github.com/USERNAME/REPO.git<br/>git branch -M main<br/>git push -u origin main"]
+
+    H --> H6["View Remote<br/>git remote -v"]
+
+    H --> H7["Open Repo Online<br/>gh repo view --web"]
+
+    A --> I["Step 4: Web Deployment"]
+
+    I --> I1["Prepare Static Site<br/>create index.html<br/>git add .<br/>git commit -m &quot;Add website files&quot;<br/>git push"]
+
+    I --> I2["Deploy to Vercel<br/>npm install -g vercel<br/>vercel login<br/>vercel<br/>Production: vercel --prod"]
+
+    I --> I3["Deploy to Netlify<br/>npm install -g netlify-cli<br/>netlify login<br/>netlify init<br/>netlify deploy<br/>Production: netlify deploy --prod"]
+
+    I --> I4["Auto-deployment from GitHub<br/>Connect GitHub repo in Vercel or Netlify<br/>Push changes:<br/>git add . && git commit -m &quot;Update site&quot; && git push"]
+
+    A --> J["Advanced Git Concepts"]
+
+    J --> J1["Git Ignore"]
+
+    J1 --> J1A["Create .gitignore<br/>touch .gitignore"]
+
+    J1 --> J1B["Ignore Secrets<br/>echo .env >> .gitignore<br/>echo node_modules/ >> .gitignore<br/>echo dist/ >> .gitignore"]
+
+    J1 --> J1C["Stop Tracking Already Tracked File<br/>git rm --cached .env<br/>git commit -m &quot;Stop tracking env file&quot;"]
+
+    J --> J2["Git Clone"]
+
+    J2 --> J2A["Clone Repo<br/>git clone https://github.com/USERNAME/REPO.git<br/>cd REPO"]
+
+    J2 --> J2B["Sync Latest Changes<br/>git pull origin main"]
+
+    J2 --> J2C["Push Your Changes<br/>git add .<br/>git commit -m &quot;My update&quot;<br/>git push origin main"]
+
+    J --> J3["Branching"]
+
+    J3 --> J3A["Create Branch<br/>git branch feature-login"]
+
+    J3 --> J3B["Switch Branch<br/>git switch feature-login<br/>or: git checkout feature-login"]
+
+    J3 --> J3C["Create and Switch<br/>git switch -c feature-login"]
+
+    J3 --> J3D["List Branches<br/>git branch"]
+
+    J3 --> J3E["Merge Branch Locally<br/>git switch main<br/>git merge feature-login"]
+
+    J3 --> J3F["Push Branch<br/>git push -u origin feature-login"]
+
+    J3 --> J3G["Create Pull Request<br/>gh pr create --base main --head feature-login --title &quot;Add feature&quot; --body &quot;Description&quot;"]
+
+    J3 --> J3H["Merge Pull Request<br/>gh pr merge --merge<br/>or merge from GitHub UI"]
