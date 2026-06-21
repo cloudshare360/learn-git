@@ -1,0 +1,12 @@
+{
+  "name": "zero-to-published-git-course",
+  "version": "1.0.0",
+  "private": true,
+  "description": "An interactive beginner-first course for Git, GitHub, and publishing a portfolio website.",
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "test": "node scripts/validate.mjs"
+  },
+  "license": "MIT"
+}
