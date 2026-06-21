@@ -4,7 +4,7 @@
 
 This plan coordinates delivery of the learning site with small, verifiable context packets. It complements `01_implementation_plan.md` and `02_task_tracker.md`; the tracker remains the source of truth for status.
 
-Current state (2026-06-21): T01 and T02 are verified, T03 is in progress, and T04–T09 are pending. `js/content.js` already contains the Phase 0–10 lesson skeleton, so the immediate critical path is schema/coverage verification rather than starting curriculum authoring again.
+Current state (2026-06-21): T01-T10 are verified and T11 is in progress. The remaining release gate is no longer curriculum or integration work; it is a controlled publication pass: merge PR #1, enable Pages from GitHub Actions, observe the deployment, verify the public URL, and then close the manual keyboard/screen-reader/live-browser checklist that T09 deferred to T11. The tracker is the status source of truth; this document now exists to define ownership and handoff rules for that final pass.
 
 ## Dependency DAG
 
@@ -28,6 +28,8 @@ flowchart LR
 ```
 
 ### Sequence versus parallel work
+
+The wave breakdown below is historical context for how the repository was built. Active work should follow the current release sequence and assignment registry instead of reopening earlier waves.
 
 1. **Sequential:** finish T03 coverage audit; freeze lesson, route, progress, quiz, visual, and capstone contracts.
 2. **Parallel fan-out:** run T04, T05, T06, and T07 concurrently only after those contracts are recorded. Each stream works in its owned files or isolated additions.
@@ -68,6 +70,104 @@ handoff_to: coordinator
 ```
 
 Only the coordinator changes status in `02_task_tracker.md`. Agents report evidence; they do not self-certify delivery tasks.
+
+## Current pending-task assignment registry
+
+The historical wave plan above remains valid, but the only open repository work is the release-verification wave. Use the following concrete packets for the remaining tasks and keep one writer for the evidence files.
+
+## Current ordered release sequence
+
+1. A11-release-owner merges PR #1 and captures the release commit that should appear on Pages.
+2. A11-release-owner enables or confirms GitHub Actions as the Pages source and observes the deployment workflow.
+3. A11-release-owner verifies the public URL, title, assets, and deep-link fallback.
+4. A11-accessibility-review executes the deferred live manual checklist against that deployed site.
+5. A11-coordinator records the resulting evidence in the tracker, test report, and README, then closes T11.
+
+### A11-coordinator
+
+```yaml
+agent_id: A11-coordinator
+task_ids: [T09, T11]
+objective: keep the tracker, README, and test report aligned while integrating release and manual-verification evidence
+status: active
+depends_on: [T10]
+input_commit: 4838377
+owned_paths:
+  - docs/02_planning/02_task_tracker.md
+  - docs/05_testing/01_test_strategy_and_report.md
+  - README.md
+read_only_paths:
+  - .github/workflows/pages.yml
+  - docs/06_deployment/01_github_pages_deployment.md
+  - docs/07_operations/01_operations_and_maintenance.md
+forbidden_paths:
+  - js/app.js
+  - js/content.js
+  - css/styles.css
+acceptance_checks:
+  - npm test
+  - evidence from A11-release-owner and A11-accessibility-review recorded without contradiction
+token_budget: medium
+handoff_to: none
+```
+
+### A11-release-owner
+
+```yaml
+agent_id: A11-release-owner
+task_ids: [T11]
+objective: turn PR #1 into a live Pages deployment and capture the exact public URL and deployed commit
+status: active
+depends_on: [T10]
+input_commit: 4838377
+owned_paths: []
+read_only_paths:
+  - .github/workflows/pages.yml
+  - 404.html
+  - index.html
+  - assets/**
+forbidden_paths:
+  - docs/02_planning/02_task_tracker.md
+  - docs/05_testing/01_test_strategy_and_report.md
+  - README.md
+acceptance_checks:
+  - gh pr view 1 --json state,mergeStateStatus,url
+  - GitHub Pages source configured to GitHub Actions
+  - pages workflow succeeds for the merged default-branch commit
+  - public Pages URL returns HTTP 200 with the expected title
+  - relative assets and deep-link fallback respond correctly
+token_budget: small
+handoff_to: A11-coordinator
+```
+
+### A11-accessibility-review
+
+```yaml
+agent_id: A11-accessibility-review
+task_ids: [T09, T11]
+objective: execute the deferred manual release checklist against the live site and return pass/fail evidence item by item
+status: queued
+depends_on: [A11-release-owner]
+input_commit: merged default-branch Pages deployment commit
+owned_paths: []
+read_only_paths:
+  - docs/05_testing/01_test_strategy_and_report.md
+  - README.md
+  - index.html
+  - js/app.js
+  - css/styles.css
+forbidden_paths:
+  - docs/02_planning/02_task_tracker.md
+acceptance_checks:
+  - keyboard-only tree, lesson, quiz, copy, panel, and checklist use
+  - deep links plus browser Back/Forward
+  - Windows/macOS/Linux command switching
+  - hint/remediation/completion/review/export/reset flows
+  - narrow layout, 200% zoom, dark theme, reduced motion, and print
+  - screen-reader landmarks, labels, status messages, and visual alternatives
+token_budget: medium
+handoff_to: A11-coordinator
+```
 
 ## Context packets and token-efficient handoffs
 
@@ -124,5 +224,6 @@ A task is `done` only when its acceptance evidence exists and its downstream con
 - **Wave 2:** T04–T07 in parallel with disjoint path ownership; draft T08 validators against the frozen schema.
 - **Wave 3:** integrate, run T08, repair failures by owning stream.
 - **Wave 4:** T09, repository/document indexing, GitHub Actions/Pages release, live-site verification.
+- **Current open slice:** A11-release-owner executes the deployment path, A11-accessibility-review verifies the live learner flows, and A11-coordinator records the final evidence and closes T11.
 
 This arrangement keeps the critical path sequential where interfaces matter and uses parallel agents only where work can be merged without duplicating context or creating shared-file conflicts.

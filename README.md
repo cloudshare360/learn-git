@@ -8,7 +8,7 @@ The site begins with a course overview and roadmap, supports a 30-minute daily l
 
 ## Project status
 
-The course is under active implementation. Progress and verification evidence are maintained in the [task tracker](docs/02_planning/02_task_tracker.md).
+Repository implementation is effectively complete; the remaining open work is the live GitHub Pages release/verification pass and the manual checks that depend on that live site. Operational status is maintained only in the [task tracker](docs/02_planning/02_task_tracker.md), while the test report stores supporting evidence.
 
 ## Run locally
 

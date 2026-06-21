@@ -28,11 +28,31 @@ Last updated: 2026-06-21
 ## Dependency and parallel-execution analysis
 
 The authoritative agent/context design is [`03_agent_execution_design.md`](03_agent_execution_design.md).
+This tracker is the operational source of truth for what is done, what is pending, and what order the remaining work should follow.
 
 - Sequential critical path: T01 → T02 → T03 → contract freeze → integration → T08 → T09 → T10 → T11.
 - Parallel-safe after T03: T04 interaction logic, T05 assessment logic, T06 visual assets, and T07 capstone/workflows, provided each writer owns distinct files and the frozen content contract is unchanged.
 - Integration constraint: `js/app.js`, `js/content.js`, `css/styles.css`, `index.html`, this tracker, and workflows have one writer per integration window.
 - Documentation/domain research ran in parallel because outputs were isolated, then were reviewed and moved into numbered SDLC paths.
+
+## Pending-task agent registry
+
+| Agent ID | Tasks | Status | Ownership | Exit evidence |
+|---|---|---:|---|---|
+| A11-coordinator | T09, T11 | [~] | Sole writer for `README.md`, this tracker, and the test report while release evidence is integrated. | All release/manual evidence reconciled and recorded without conflicting claims. |
+| A11-release-owner | T11 | [~] | GitHub-side merge, Pages source, workflow observation, and public URL verification; no repository-file write ownership. | PR #1 merged, Pages workflow green, public URL/title/asset checks captured. |
+| A11-accessibility-review | T09, T11 | [ ] | Manual live-site execution only; returns evidence to coordinator and does not edit shared docs directly. | Keyboard, screen-reader, responsive, deep-link, and progress-flow checklist completed against the live site. |
+
+## Current ordered release sequence
+
+Use this sequence for the remaining work so status, ownership, and evidence stay aligned:
+
+1. **GitHub release action:** merge PR #1 and confirm the default-branch release commit.
+2. **Pages configuration:** enable or confirm GitHub Actions as the Pages source.
+3. **Workflow observation:** wait for the Pages deployment workflow to finish and capture the deployment URL.
+4. **Live site verification:** verify public URL, expected title, relative assets, and deep-link behavior.
+5. **Deferred manual review:** execute the T09 checklist items against the live site in the test report's listed order.
+6. **Evidence closeout:** update the README and test report, then mark T11 done only after all evidence matches.
 
 ## Task checklists
 
@@ -118,17 +138,18 @@ The authoritative agent/context design is [`03_agent_execution_design.md`](03_ag
 
 ### T10 — Git repository publication and draft PR
 
-- [ ] Verify GitHub CLI installation and authentication.
-- [ ] Inspect final scope and initialize/discover the Git repository.
-- [ ] Create a `codex/zero-to-published-course` branch when publishing from the default branch.
-- [ ] Stage intended files, commit, run checks, and push with upstream tracking.
-- [ ] Open a draft pull request and record its URL.
+- [x] Verify GitHub CLI installation and authentication.
+- [x] Inspect final scope and initialize/discover the Git repository.
+- [x] Create a `codex/zero-to-published-course` branch when publishing from the default branch.
+- [x] Stage intended files, commit, run checks, and push with upstream tracking.
+- [x] Open a draft pull request and record its URL.
 
 ### T11 — GitHub Pages live verification
 
 - [ ] Enable/configure GitHub Actions as the Pages source.
 - [ ] Observe the deployment workflow to completion.
 - [ ] Verify the public URL, assets, navigation, and expected title.
+- [ ] Run the deferred T09 live manual checklist against the deployed site.
 - [ ] Record the live URL and deployment evidence in README/test report.
 
 ## Change log
@@ -150,3 +171,4 @@ The authoritative agent/context design is [`03_agent_execution_design.md`](03_ag
 | 2026-06-21 | T10 | Configured secure GitHub CLI credential helper and repository-local no-reply authorship; full staged validation and local HTTP runtime checks passed. |
 | 2026-06-21 | T10 | Pushed `4838377`, opened https://github.com/cloudshare360/learn-git/pull/1, and observed the GitHub `validate` check pass. Completed T10 and started T11. |
 | 2026-06-21 | T11 | Before merge, added overview/roadmap/outcomes/differentiation, a 30-minute daily learning loop, varied progress motivation, and accessible highlighted text to speech; local revalidation in progress. |
+| 2026-06-21 | T11 | Added explicit A11 coordinator/release/accessibility agent ownership and metadata so the remaining Pages deployment and manual release checks can be executed without shared-file conflicts. |

@@ -22,6 +22,8 @@
 
 ## Current report
 
+Operational status lives in `docs/02_planning/02_task_tracker.md`. This report stores supporting evidence and the ordered manual checklist for the live verification pass.
+
 Date: 2026-06-21
 
 ### Automated result
@@ -83,10 +85,12 @@ Approved headless Edge/Chrome attempts hung under the managed execution environm
 
 ### Manual release checklist
 
-- [ ] Keyboard-only tree, lesson, quiz, copy, panel, and checklist use.
-- [ ] Deep links and browser Back/Forward.
-- [ ] Windows, macOS, and Linux command switching.
-- [ ] Hint, repeated-error remediation, completion, review queue, export, and reset.
-- [ ] Narrow/mobile layout, 200% zoom, dark theme, reduced motion, and print.
-- [ ] Screen-reader landmarks, labels, status messages, and visual alternatives.
-- [ ] Live Pages workflow, public URL, assets, console, HTTPS, and expected commit.
+Run these in order once the live Pages URL exists:
+
+1. [ ] Confirm live Pages workflow result, public URL, HTTPS, assets, console, and expected commit.
+2. [ ] Verify keyboard-only tree, lesson, quiz, copy, panel, and checklist use.
+3. [ ] Verify deep links and browser Back/Forward.
+4. [ ] Verify Windows, macOS, and Linux command switching.
+5. [ ] Verify hint, repeated-error remediation, completion, review queue, export, and reset.
+6. [ ] Verify narrow/mobile layout, 200% zoom, dark theme, reduced motion, and print.
+7. [ ] Verify screen-reader landmarks, labels, status messages, and visual alternatives.
