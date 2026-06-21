@@ -8,7 +8,7 @@ The site begins with a course overview and roadmap, supports a 30-minute daily l
 
 ## Project status
 
-Repository implementation is effectively complete; the remaining open work is the live GitHub Pages release/verification pass and the manual checks that depend on that live site. Operational status is maintained only in the [task tracker](docs/02_planning/02_task_tracker.md), while the test report stores supporting evidence.
+Repository implementation is complete and the live site is deployed at https://cloudshare360.github.io/learn-git/. Operational status, including the remaining managed-environment limitation for fully interactive browser/screen-reader release checks, is maintained in the [task tracker](docs/02_planning/02_task_tracker.md). Supporting evidence is stored in the [test report](docs/05_testing/01_test_strategy_and_report.md).
 
 ## Run locally
 
@@ -69,7 +69,7 @@ index.html              Interactive course entry point
 
 ## Deployment
 
-The repository includes a GitHub Actions workflow for validation and GitHub Pages deployment. Deployment instructions, repository settings, custom-domain DNS, verification, and HTTPS are documented under [`docs/06_deployment`](docs/06_deployment/).
+The repository includes a GitHub Actions workflow for validation and GitHub Pages deployment. The current public site is https://cloudshare360.github.io/learn-git/. Deployment instructions, repository settings, custom-domain DNS, verification, and HTTPS are documented under [`docs/06_deployment`](docs/06_deployment/).
 
 ## Security and privacy
 

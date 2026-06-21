@@ -62,6 +62,22 @@ The home response contained the expected “Zero to Published” application she
 - Pull request: https://github.com/cloudshare360/learn-git/pull/1
 - GitHub Actions validation: passed
 
+### Live Pages result
+
+- Follow-up fix pull request: https://github.com/cloudshare360/learn-git/pull/2
+- Deployed commit: `807bc7a`
+- Successful Pages workflow: https://github.com/cloudshare360/learn-git/actions/runs/27916809416
+- Public URL: https://cloudshare360.github.io/learn-git/
+- Verified live responses:
+  - Home page: HTTP 200
+  - Title: `Git & GitHub — Zero to Published`
+  - `js/app.js`: HTTP 200
+  - `js/content.js`: HTTP 200
+  - `css/styles.css`: HTTP 200
+  - `assets/logo.svg`: HTTP 200
+  - Hash-route home URL: HTTP 200
+  - Non-existent path fallback: HTTP 404 with the expected Pages 404 document
+
 ### Pre-merge learner-experience expansion
 
 Before merge, the release added and revalidated:
@@ -81,16 +97,17 @@ Before merge, the release added and revalidated:
 
 ### Environment limitation
 
-Approved headless Edge/Chrome attempts hung under the managed execution environment and were terminated. They produced no application failure output, but are not counted as browser interaction evidence. Interactive browser, screen-reader, and live Pages verification remain release gates and must be recorded after GitHub publication.
+Approved headless Edge/Chrome attempts under the managed execution environment still did not produce usable browser-interaction evidence after publication. The live site itself deployed successfully and returned expected HTTP/title/asset responses, but interactive keyboard, screen-reader, and browser-console walkthroughs are still not counted as completed evidence in this environment.
 
 ### Manual release checklist
 
 Run these in order once the live Pages URL exists:
 
-1. [ ] Confirm live Pages workflow result, public URL, HTTPS, assets, console, and expected commit.
-2. [ ] Verify keyboard-only tree, lesson, quiz, copy, panel, and checklist use.
-3. [ ] Verify deep links and browser Back/Forward.
-4. [ ] Verify Windows, macOS, and Linux command switching.
-5. [ ] Verify hint, repeated-error remediation, completion, review queue, export, and reset.
-6. [ ] Verify narrow/mobile layout, 200% zoom, dark theme, reduced motion, and print.
-7. [ ] Verify screen-reader landmarks, labels, status messages, and visual alternatives.
+1. [x] Confirm live Pages workflow result, public URL, HTTPS, expected commit, and key asset responses.
+2. [x] Confirm the hash-route home URL and non-existent path fallback return expected live responses.
+3. [ ] Verify keyboard-only tree, lesson, quiz, copy, panel, and checklist use.
+4. [ ] Verify deep links and browser Back/Forward within a reliable interactive browser session.
+5. [ ] Verify Windows, macOS, and Linux command switching in a live browser session.
+6. [ ] Verify hint, repeated-error remediation, completion, review queue, export, and reset.
+7. [ ] Verify narrow/mobile layout, 200% zoom, dark theme, reduced motion, and print.
+8. [ ] Verify screen-reader landmarks, labels, status messages, and visual alternatives.
