@@ -23,7 +23,7 @@ Last updated: 2026-06-21
 | T08 | Automated quality verification | [x] | T02–T07 | `npm test` passes structure, schema, content, asset, link, documentation, Markmap, and workflow checks. |
 | T09 | Final documentation and end-to-end review | [x] | T08 | README, numbered SDLC documentation, contribution/security files, test evidence, route/feedback review, and final static gate completed. Browser/live checks assigned to T11. |
 | T10 | Git repository publication and draft PR | [x] | T09 | Commit `4838377` pushed on `codex/zero-to-published-course`; draft PR #1 opened; GitHub validation passed. |
-| T11 | GitHub Pages live verification | [~] | T10 | In progress: merge PR #1, enable Pages, monitor workflow, and verify public URL. |
+| T11 | GitHub Pages live verification | [~] | T10 | PR #1 merged; follow-up PR #2 enabled Pages creation for workflow deployments; workflow run `27916809416` deployed https://cloudshare360.github.io/learn-git/ from `807bc7a`. Live HTTP/title/asset/hash/404 checks passed. Fully interactive browser and screen-reader walkthrough remains constrained by the managed environment and is recorded in the test report. |
 
 ## Dependency and parallel-execution analysis
 
@@ -39,9 +39,9 @@ This tracker is the operational source of truth for what is done, what is pendin
 
 | Agent ID | Tasks | Status | Ownership | Exit evidence |
 |---|---|---:|---|---|
-| A11-coordinator | T09, T11 | [~] | Sole writer for `README.md`, this tracker, and the test report while release evidence is integrated. | All release/manual evidence reconciled and recorded without conflicting claims. |
-| A11-release-owner | T11 | [~] | GitHub-side merge, Pages source, workflow observation, and public URL verification; no repository-file write ownership. | PR #1 merged, Pages workflow green, public URL/title/asset checks captured. |
-| A11-accessibility-review | T09, T11 | [ ] | Manual live-site execution only; returns evidence to coordinator and does not edit shared docs directly. | Keyboard, screen-reader, responsive, deep-link, and progress-flow checklist completed against the live site. |
+| A11-coordinator | T09, T11 | [~] | Sole writer for `README.md`, this tracker, and the test report while release evidence is integrated. | Deployment evidence recorded cleanly; final interactive browser/screen-reader limitation documented consistently. |
+| A11-release-owner | T11 | [x] | GitHub-side merge, Pages source, workflow observation, and public URL verification; no repository-file write ownership. | PR #1 merged, PR #2 fixed Pages enablement, workflow run `27916809416` succeeded, and live URL/title/asset checks were captured. |
+| A11-accessibility-review | T09, T11 | [!] | Fully interactive browser, keyboard, and screen-reader release walkthrough. | Requires an environment that can execute reliable live browser interaction; managed headless attempts did not produce usable evidence. |
 
 ## Current ordered release sequence
 
@@ -51,8 +51,8 @@ Use this sequence for the remaining work so status, ownership, and evidence stay
 2. **Pages configuration:** enable or confirm GitHub Actions as the Pages source.
 3. **Workflow observation:** wait for the Pages deployment workflow to finish and capture the deployment URL.
 4. **Live site verification:** verify public URL, expected title, relative assets, and deep-link behavior.
-5. **Deferred manual review:** execute the T09 checklist items against the live site in the test report's listed order.
-6. **Evidence closeout:** update the README and test report, then mark T11 done only after all evidence matches.
+5. **Deferred manual review:** execute the remaining T09 checklist items against the live site in the test report's listed order.
+6. **Evidence closeout:** update the README and test report, then mark T11 done only after all evidence matches and a reliable interactive browser/screen-reader pass is available.
 
 ## Task checklists
 
@@ -134,7 +134,7 @@ Use this sequence for the remaining work so status, ownership, and evidence stay
 - [x] Record automated results and environment limitations in the test report.
 - [x] Perform end-to-end static flow review and correct route/feedback issues.
 - [x] Verify all SDLC files use ordered numeric names and reconcile local implementation statuses.
-- [ ] Complete keyboard, screen-reader, and live-browser checklist after T11 publication.
+- [ ] Complete keyboard, screen-reader, and live-browser checklist in a fully interactive browser environment after T11 publication.
 
 ### T10 — Git repository publication and draft PR
 
@@ -146,11 +146,11 @@ Use this sequence for the remaining work so status, ownership, and evidence stay
 
 ### T11 — GitHub Pages live verification
 
-- [ ] Enable/configure GitHub Actions as the Pages source.
-- [ ] Observe the deployment workflow to completion.
-- [ ] Verify the public URL, assets, navigation, and expected title.
-- [ ] Run the deferred T09 live manual checklist against the deployed site.
-- [ ] Record the live URL and deployment evidence in README/test report.
+- [x] Enable/configure GitHub Actions as the Pages source.
+- [x] Observe the deployment workflow to completion.
+- [x] Verify the public URL, key assets, hash-route home response, 404 fallback, and expected title.
+- [ ] Run the deferred T09 live manual checklist against the deployed site in a reliable interactive browser environment.
+- [x] Record the live URL and deployment evidence in README/test report.
 
 ## Change log
 
@@ -172,3 +172,6 @@ Use this sequence for the remaining work so status, ownership, and evidence stay
 | 2026-06-21 | T10 | Pushed `4838377`, opened https://github.com/cloudshare360/learn-git/pull/1, and observed the GitHub `validate` check pass. Completed T10 and started T11. |
 | 2026-06-21 | T11 | Before merge, added overview/roadmap/outcomes/differentiation, a 30-minute daily learning loop, varied progress motivation, and accessible highlighted text to speech; local revalidation in progress. |
 | 2026-06-21 | T11 | Added explicit A11 coordinator/release/accessibility agent ownership and metadata so the remaining Pages deployment and manual release checks can be executed without shared-file conflicts. |
+| 2026-06-21 | T11 | PR #1 merged to `main`, but the first Pages deployment failed because the repository did not yet have a Pages site. |
+| 2026-06-21 | T11 | Added workflow enablement in PR #2, created the Pages site through the repository-owner API with `build_type=workflow`, and re-ran deployment successfully. |
+| 2026-06-21 | T11 | Verified https://cloudshare360.github.io/learn-git/ with HTTP 200, expected title, asset responses, hash-route home response, and 404 fallback. Fully interactive browser/screen-reader evidence remains managed-environment limited. |
