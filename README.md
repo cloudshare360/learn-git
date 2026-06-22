@@ -49,11 +49,12 @@ Read the documentation in SDLC order:
 5. [Architecture](docs/03_design/01_architecture.md)
 6. [Content and interaction design](docs/03_design/02_content_and_interaction_design.md)
 7. [Course mind map (Markmap source)](docs/03_design/03_course_mindmap.md)
-8. [Development guide](docs/04_development/01_development_guide.md)
-9. [Test strategy and report](docs/05_testing/01_test_strategy_and_report.md)
-10. [GitHub Pages deployment](docs/06_deployment/01_github_pages_deployment.md)
-11. [Custom domain guide](docs/06_deployment/02_custom_domain_guide.md)
-12. [Operations and maintenance](docs/07_operations/01_operations_and_maintenance.md)
+8. [Topic map library](docs/03_design/04_topic_map_library.md)
+9. [Development guide](docs/04_development/01_development_guide.md)
+10. [Test strategy and report](docs/05_testing/01_test_strategy_and_report.md)
+11. [GitHub Pages deployment](docs/06_deployment/01_github_pages_deployment.md)
+12. [Custom domain guide](docs/06_deployment/02_custom_domain_guide.md)
+13. [Operations and maintenance](docs/07_operations/01_operations_and_maintenance.md)
 
 ## Repository structure
 
@@ -65,6 +66,12 @@ js/                     Course content and application logic
 scripts/                Local server and validation tools
 .github/workflows/      Validation and GitHub Pages automation
 index.html              Interactive course entry point
+```
+
+Generate per-module Markmap and Mermaid topic diagrams with:
+
+```bash
+npm run generate:topic-maps
 ```
 
 ## Deployment

@@ -32,6 +32,14 @@ Use Markdown headings and lists as the source for mind maps. Preview with the [M
 2. Open a mind-map Markdown file such as `docs/03_design/03_course_mindmap.md`.
 3. Open the Command Palette and select the Markmap preview command.
 4. Review both the visual map and the raw Markdown outline.
+
+Generate the per-module topic map set from the structured curriculum with:
+
+```bash
+npm run generate:topic-maps
+```
+
+This writes the discoverable library file at `docs/03_design/04_topic_map_library.md` and refreshes the paired Markmap and Mermaid documents under `docs/03_design/topic_maps/`.
 5. Commit the Markdown source; generated exports are committed only when the application explicitly consumes them.
 
 Do not make the generated diagram the only source of information. Keep the heading hierarchy meaningful for screen readers, text browsers, diffs, and environments where the extension is unavailable.

@@ -21,7 +21,7 @@ Last updated: 2026-06-21
 | T06 | Visual learning system and simulations | [x] | T03, T04 | 44 accessible visuals across 13 types; safe text-only simulator available for 29 command lessons. |
 | T07 | Portfolio capstone and deployment | [x] | T03, T04 | Accessible portfolio starter, 14-item validator, validation/Pages workflows, release path, and domain guide verified. |
 | T08 | Automated quality verification | [x] | T02–T07 | `npm test` passes structure, schema, content, asset, link, documentation, Markmap, and workflow checks. |
-| T09 | Final documentation and end-to-end review | [x] | T08 | README, numbered SDLC documentation, contribution/security files, test evidence, route/feedback review, and final static gate completed. Browser/live checks assigned to T11. |
+| T09 | Final documentation and end-to-end review | [x] | T08 | README, numbered SDLC documentation, contribution/security files, test evidence, route/feedback review, final static gate, and generated topic-map library completed. Browser/live checks assigned to T11. |
 | T10 | Git repository publication and draft PR | [x] | T09 | Commit `4838377` pushed on `codex/zero-to-published-course`; draft PR #1 opened; GitHub validation passed. |
 | T11 | GitHub Pages live verification | [~] | T10 | PR #1 merged; follow-up PR #2 enabled Pages creation for workflow deployments; workflow run `27916809416` deployed https://cloudshare360.github.io/learn-git/ from `807bc7a`. Live HTTP/title/asset/hash/404 checks passed. Fully interactive browser and screen-reader walkthrough remains constrained by the managed environment and is recorded in the test report. |
 
@@ -131,6 +131,7 @@ Use this sequence for the remaining work so status, ownership, and evidence stay
 
 - [x] Complete README and repository health files.
 - [x] Complete content/Markmap authoring and agent-context guide.
+- [x] Add generated per-topic Markmap and Mermaid documentation library.
 - [x] Record automated results and environment limitations in the test report.
 - [x] Perform end-to-end static flow review and correct route/feedback issues.
 - [x] Verify all SDLC files use ordered numeric names and reconcile local implementation statuses.
@@ -175,3 +176,4 @@ Use this sequence for the remaining work so status, ownership, and evidence stay
 | 2026-06-21 | T11 | PR #1 merged to `main`, but the first Pages deployment failed because the repository did not yet have a Pages site. |
 | 2026-06-21 | T11 | Added workflow enablement in PR #2, created the Pages site through the repository-owner API with `build_type=workflow`, and re-ran deployment successfully. |
 | 2026-06-21 | T11 | Verified https://cloudshare360.github.io/learn-git/ with HTTP 200, expected title, asset responses, hash-route home response, and 404 fallback. Fully interactive browser/screen-reader evidence remains managed-environment limited. |
+| 2026-06-21 | T09 | Added a generated topic-map library: one Markmap outline and one Mermaid companion diagram file per module, derived from `js/content.js`, with design/development/readme indexing and validator coverage. |

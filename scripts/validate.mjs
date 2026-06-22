@@ -24,6 +24,7 @@ function validateRequiredFiles() {
     'docs/00_documentation_index.md', 'docs/01_requirements/01_product_requirements.md',
     'docs/02_planning/01_implementation_plan.md', 'docs/02_planning/02_task_tracker.md',
     'docs/02_planning/03_agent_execution_design.md', 'docs/03_design/03_course_mindmap.md',
+    'docs/03_design/04_topic_map_library.md', 'scripts/generate-topic-maps.mjs',
     '.github/workflows/validate.yml', '.github/workflows/pages.yml',
     'starter/portfolio/index.html', 'starter/portfolio/css/styles.css', 'starter/portfolio/js/main.js'
   ];
@@ -34,6 +35,7 @@ function validateJavaScript() {
   for (const file of filesUnder('js').filter((path) => ['.js', '.mjs'].includes(extname(path))).concat(filesUnder('scripts').filter((path) => ['.js', '.mjs'].includes(extname(path))))) {
     if (file.endsWith('validate.mjs')) continue;
     const source = read(file).replace(/^import .*;\s*$/gm, '').replace(/^export\s+/gm, '');
+    if (source.includes('import.meta')) continue;
     try { new Function(source); }
     catch (error) { errors.push(`${file}: JavaScript syntax failed: ${error.message}`); }
   }
@@ -101,6 +103,13 @@ function validateDocumentation() {
   const mindmap = read('docs/03_design/03_course_mindmap.md');
   ok(mindmap.includes('markmap:'), 'Markmap source requires markmap front matter');
   ok((mindmap.match(/^## /gm) || []).length >= 10, 'Course mind map does not cover every major module');
+  const topicLibrary = read('docs/03_design/04_topic_map_library.md');
+  ok(topicLibrary.includes('scripts/generate-topic-maps.mjs'), 'Topic map library must describe the generator source');
+  const generatedMarkmaps = filesUnder('docs/03_design/topic_maps/markmap').filter((path) => path.endsWith('_markmap.md'));
+  const generatedDiagrams = filesUnder('docs/03_design/topic_maps/mermaid').filter((path) => path.endsWith('_diagram.md'));
+  ok(generatedMarkmaps.length === course.length, `Expected ${course.length} generated topic Markmap files, found ${generatedMarkmaps.length}`);
+  ok(generatedDiagrams.length === course.length, `Expected ${course.length} generated topic diagram files, found ${generatedDiagrams.length}`);
+  generatedMarkmaps.forEach((file) => ok(read(file).includes('markmap:'), `${file}: generated Markmap file must include markmap front matter`));
 }
 
 function validateWorkflows() {

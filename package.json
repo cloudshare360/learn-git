@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node scripts/serve.mjs",
-    "test": "node scripts/validate.mjs"
+    "test": "node scripts/validate.mjs",
+    "generate:topic-maps": "node scripts/generate-topic-maps.mjs"
   },
   "license": "MIT"
 }

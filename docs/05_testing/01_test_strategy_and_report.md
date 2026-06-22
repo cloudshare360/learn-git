@@ -37,12 +37,12 @@ npm test
 Result:
 
 ```text
-Validation passed: 11 modules, 44 lessons, 13 documentation files, 14 capstone checks.
+Validation passed: 11 modules, 44 lessons, 36 documentation files, 14 capstone checks.
 ```
 
-The validator checked required files, JavaScript parsing, lesson and quiz schemas, IDs and prerequisites, remediation states, critical curriculum coverage, one accessible visual per lesson, capstone completion, local HTML assets, project-Pages-safe paths, numbered SDLC documents, internal documentation links, Markmap source structure, and workflow permissions/stages.
+The validator checked required files, JavaScript parsing, lesson and quiz schemas, IDs and prerequisites, remediation states, critical curriculum coverage, one accessible visual per lesson, capstone completion, local HTML assets, project-Pages-safe paths, numbered SDLC documents, internal documentation links, Markmap source structure, generated per-topic Markmap and Mermaid library coverage, and workflow permissions/stages.
 
-Focused checks also confirmed 13 visual types, 29 simulator-eligible command lessons, and the expected portfolio/Pages files.
+Focused checks also confirmed 13 visual types, 29 simulator-eligible command lessons, the expected portfolio/Pages files, and one generated Markmap file plus one generated Mermaid diagram file per module.
 
 ### Local runtime result
 

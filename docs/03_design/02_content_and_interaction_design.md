@@ -33,3 +33,5 @@ The renderer supports orientation maps, folder trees, paths, Git areas, Git grap
 Course mind maps are stored as Markdown whose heading/list hierarchy is renderable by [Markmap](https://markmap.js.org/). The recommended authoring preview is the [Markmap VS Code extension](https://marketplace.visualstudio.com/items?itemName=gera2ld.markmap-vscode).
 
 The canonical course source is [`03_course_mindmap.md`](03_course_mindmap.md). In VS Code, install the verified `gera2ld.markmap-vscode` extension, open that Markdown file, and run the Markmap preview command from the Command Palette. The Markdown hierarchy remains the accessible text fallback and the reviewable source in Git.
+
+For module-by-module exploration, the generated library in [`04_topic_map_library.md`](04_topic_map_library.md) provides one Markmap file and one Mermaid-based companion diagram file per topic. Those artifacts are generated from `js/content.js` by `npm run generate:topic-maps`, so the curriculum structure remains the single source of truth.

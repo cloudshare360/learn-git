@@ -17,6 +17,7 @@ The documentation is organized in the order a reader normally uses it: requireme
 1. [`03_design/01_architecture.md`](03_design/01_architecture.md) — Static application architecture and data flow.
 2. [`03_design/02_content_and_interaction_design.md`](03_design/02_content_and_interaction_design.md) — Lesson schema, navigation, assessment, remediation, and visual conventions.
 3. [`03_design/03_course_mindmap.md`](03_design/03_course_mindmap.md) — Markmap-compatible Markdown source for the complete learning path.
+4. [`03_design/04_topic_map_library.md`](03_design/04_topic_map_library.md) — Generated per-module Markmap outlines and Mermaid concept diagrams.
 
 ## 04 — Development
 
